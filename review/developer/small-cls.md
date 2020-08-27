@@ -49,6 +49,7 @@ that:
     general it's better to err on the side of writing CLs that are too small vs.
     CLs that are too large. Work with your reviewer to find out what an
     acceptable size is.
+-   The CL should [include related test code](#test_code).
 -   Everything the reviewer needs to understand about the CL (except future
     development) is in the CL, the CL's description, the existing codebase, or a
     CL they've already reviewed.
@@ -113,16 +114,27 @@ more difficult if included in your current CL.
 
 ## Keep related test code in the same CL {#test_code}
 
-Avoid splitting test code into a separate CL. Tests validating your code
-modifications should go into the same CL, even if it increases the code line
-count.
+CLs should include related test code. Remember that [smallness](#what_is_small)
+here refers the conceptual idea that the CL should be focused and is not a
+simplistic function on line count.
 
-However, <i>independent</i> test modifications can go into separate CLs first,
-similar to the [refactorings guidelines](#refactoring). That includes:
+A CL that adds or changes logic should be accompanied by new or updated tests
+for the new behavior. Pure refactoring CLs (that aren't intended to change
+behavior) should also be covered by tests; ideally, these tests already exist,
+but if they don't, you should add them.
 
-*   validating pre-existing, submitted code with new tests.
-*   refactoring the test code (e.g. introduce helper functions).
-*   introducing larger test framework code (e.g. an integration test).
+_Independent_ test modifications can go into separate CLs first, similar to the
+[refactorings guidelines](#refactoring). That includes:
+
+*   Validating pre-existing, submitted code with new tests.
+    *   Ensures that important logic is covered by tests.
+    *   Increases confidence in subsequent refactorings on affected code. For
+        example, if you want to refactor code that isn't already covered by
+        tests, submitting test CLs _before_ submitting refactoring CLs can
+        validate that the tested behavior is unchanged before and after the
+        refactoring.
+*   Refactoring the test code (e.g. introduce helper functions).
+*   Introducing larger test framework code (e.g. an integration test).
 
 ## Don't Break the Build {#break}
 
